@@ -31,7 +31,7 @@ public class CompileServiceImpl implements CompileService {
 
         CompileDTO compileDTO = new CompileDTO();
         try {
-            Map<String, Object> runningResult = compilerRunner.runProgram(commandLine, null, compileLogPath, timeLimit, memoryLimit);
+            Map<String, Object> runningResult = compilerRunner.runProgram(commandLine, "", compileLogPath, timeLimit, memoryLimit);
 
             boolean success = false;
             if ( runningResult != null ) {
