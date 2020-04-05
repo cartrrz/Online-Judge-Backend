@@ -1,5 +1,6 @@
 package com.spoky.patito.gateway.service.impl;
 
+import com.spoky.patito.gateway.model.Submission;
 import com.spoky.patito.gateway.service.RunnerService;
 import com.spoky.patito.gateway.util.NativeLibraryUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ public class RunnerServiceImpl implements RunnerService {
     private String systemPassword;
 
     @Override
-    public Map<String, Object> getRuntimeResult(String commandLine,
+    public Map<String, Object> runProgram(String commandLine,
                                                 String inputFilePath,
                                                 String outputFilePath,
                                                 int timeLimit,
@@ -33,13 +34,7 @@ public class RunnerServiceImpl implements RunnerService {
         return result;
     }
 
-    @Override
-    public Map<String, Object> runProgram(){
-        String stdoutputPath;
-        String outputPath;
-        String inputPath;
-        return null;
-    }
+
 
     private native Map<String, Object> getRuntimeResult(String commandLine, String systemUsername, String systemPassword, String inputFilePath, String outputFilePath, int timeLimit, int memoryLimit);
 

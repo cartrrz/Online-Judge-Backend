@@ -1,13 +1,22 @@
 CC=g++
-CFLAGS=-c -std=c++11 -Wall -fPIC -I "{$JAVA_HOME}include/"
+CFLAGS=-c -std=c++11 -Wall -fPIC -I "${JAVA_HOME}/include" -I "${JAVA_HOME}/include/linux"
 LDFLAGS=-fPIC -shared
 EXTFLAGS=
 
-
-SOURCES_DIR=gateway/src/main/cpp/unix
-OBJECTS_DIR=gateway/target/cpp
-EXECUTABLE=target/classes/libJudgerCore.dylib
-EXTFLAGS=-lpthread -lrt
+ifeq ($(OS), Windows_NT)
+	SOURCES_DIR=gateway/src/main/cpp/windows
+	OBJECTS_DIR=gateway/target/cpp
+	EXECUTABLE=gateway/target/classes/JudgerCore.dll
+	EXTFLAGS=-luserenv -lpsapi
+else
+	UNAME_S := $(shell uname -s)
+	ifeq ($(UNAME_S), Linux)
+		SOURCES_DIR=gateway/src/main/cpp/unix
+		OBJECTS_DIR=gateway/target/cpp
+		EXECUTABLE=gateway/target/classes/libJudgerCore.so
+		EXTFLAGS=-lpthread -lrt
+	endif
+endif
 
 SOURCES=$(wildcard $(SOURCES_DIR)/*.cpp)
 OBJECTS=$(SOURCES:$(SOURCES_DIR)/%.cpp=$(OBJECTS_DIR)/%.o)

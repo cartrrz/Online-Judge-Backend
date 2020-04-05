@@ -6,6 +6,8 @@ public class Submission {
     private String input;
     private String language;
     private String problemName;
+    private int timeLimit;
+    private  int memoryLimit;
 
     public String getCode() {
         return code;
@@ -45,5 +47,21 @@ public class Submission {
 
     public void setProblemName(String problemName) {
         this.problemName = problemName;
+    }
+
+    public int getTimeLimit() {
+        return timeLimit;
+    }
+
+    public void setTimeLimit(int timeLimit) {
+        this.timeLimit = timeLimit;
+    }
+
+    public int getMemoryLimit() {
+        return memoryLimit;
+    }
+
+    public void setMemoryLimit(int memoryLimit) {
+        this.memoryLimit = memoryLimit;
     }
 }

@@ -1,6 +1,7 @@
 package com.spoky.patito.gateway.service.impl;
 
 import com.spoky.patito.gateway.model.Submission;
+import com.spoky.patito.gateway.model.transfer.CompileDTO;
 import com.spoky.patito.gateway.service.CompileService;
 import com.spoky.patito.gateway.service.RunnerService;
 import com.spoky.patito.gateway.util.FileUtil;
@@ -21,25 +22,31 @@ public class CompileServiceImpl implements CompileService {
     private FileUtil fileUtil;
 
     @Override
-    public Map<String, Object> getCompileResult(Submission submission, String workDirectory, String compilePattern){
+    public CompileDTO getCompileResult(Submission submission, String workDirectory, String compilePattern){
         String commandLine = getCompileCommandLine(submission.getProblemName(), workDirectory, compilePattern);
         String compileLogPath = String.format("%s/%s-compile.log",workDirectory, submission.getProblemName());
 
         int timeLimit = 5000;
         int memoryLimit = 0;
 
-        Map<String, Object> runningResult = compilerRunner.getRuntimeResult(commandLine, null, compileLogPath, timeLimit, memoryLimit);
+        CompileDTO compileDTO = new CompileDTO();
+        try {
+            Map<String, Object> runningResult = compilerRunner.runProgram(commandLine, null, compileLogPath, timeLimit, memoryLimit);
 
-        Map<String, Object> result = new HashMap<>();
-        boolean success = false;
-        if ( runningResult != null ) {
-            int exitCode = (Integer)runningResult.get("exitCode");
-            success = exitCode == 0;
+            boolean success = false;
+            if ( runningResult != null ) {
+                int exitCode = (Integer)runningResult.get("exitCode");
+                success = exitCode == 0;
+            }
+            compileDTO.setSuccess(success);
+            compileDTO.setLog(fileUtil.getContentFile(compileLogPath));
+
+        }catch (Exception e){
+            //TODO: loggers
         }
-        result.put("Success", success);
-        result.put("log", fileUtil.getContentFile(compileLogPath));
 
-        return null;
+
+        return compileDTO;
     }
 
     private String getCompileCommandLine(String name, String workDirectory, String compilePattern) {

@@ -4,10 +4,10 @@ import java.util.Map;
 
 public interface RunnerService {
 
-    Map<String, Object> getRuntimeResult(String commandLine,
+    Map<String, Object> runProgram(String commandLine,
                                                 String inputFilePath,
                                                 String outputFilePath,
                                                 int timeLimit,
                                                 int memoryLimit);
-    Map<String, Object> runProgram();
+
 }
