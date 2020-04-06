@@ -31,10 +31,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
+
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -77,45 +74,5 @@
 
     </dependencies>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-
-            <!-- Build Dynamic Run Library for JNI -->
-            <plugin>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <version>1.8</version>
-                <executions>
-                    <execution>
-                        <phase>process-classes</phase>
-                        <configuration>
-                            <target name="Compile JNI C Library"
-                                    description="Generate headers and compile the native code">
-                                <!--
-                                    <echo>Generating JNI headers</echo>
-                                    <exec executable="javah">
-                                        <arg value="-d" />
-                                        <arg value="${project.basedir}/src/main/cpp" />
-                                        <arg value="-classpath" />
-                                        <arg value="${project.build.outputDirectory}" />
-                                        <arg value="-force" />
-                                        <arg value="org.verwandlung.voj.judger.core.Runner" />
-                                    </exec>
-                                -->
-                                <echo>Generating dynamic-link library</echo>
-                                <exec executable="make"></exec>
-                            </target>
-                        </configuration>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>

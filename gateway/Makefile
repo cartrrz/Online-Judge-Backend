@@ -4,16 +4,16 @@ LDFLAGS=-fPIC -shared
 EXTFLAGS=
 
 ifeq ($(OS), Windows_NT)
-	SOURCES_DIR=gateway/src/main/cpp/windows
-	OBJECTS_DIR=gateway/target/cpp
-	EXECUTABLE=gateway/target/classes/JudgerCore.dll
+	SOURCES_DIR=src/main/cpp/windows
+	OBJECTS_DIR=target/cpp
+	EXECUTABLE=target/classes/JudgerCore.dll
 	EXTFLAGS=-luserenv -lpsapi
 else
 	UNAME_S := $(shell uname -s)
 	ifeq ($(UNAME_S), Linux)
-		SOURCES_DIR=gateway/src/main/cpp/unix
-		OBJECTS_DIR=gateway/target/cpp
-		EXECUTABLE=gateway/target/classes/libJudgerCore.so
+		SOURCES_DIR=src/main/cpp/unix
+		OBJECTS_DIR=target/cpp
+		EXECUTABLE=target/classes/libJudgerCore.so
 		EXTFLAGS=-lpthread -lrt
 	endif
 endif
