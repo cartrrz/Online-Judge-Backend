@@ -12,7 +12,7 @@ extern "C" {
  * Method:    getRuntimeResult
  * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;II)Ljava/util/Map;
  */
-JNIEXPORT jobject JNICALL Java_org_verwandlung_voj_judger_core_Runner_getRuntimeResult
+JNIEXPORT jobject JNICALL Java_com_spoky_patito_gateway_service_impl_RunnerServiceImpl_getRuntimeResult
   (JNIEnv *, jobject, jstring, jstring, jstring, jstring, jstring, jint, jint);
 
 #ifdef __cplusplus
