@@ -5,10 +5,7 @@ import com.spoky.patito.gateway.model.LanguageEnum;
 import com.spoky.patito.gateway.model.Submission;
 import com.spoky.patito.gateway.model.transfer.SubmissionResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -20,8 +17,11 @@ public class JudgeController {
     @Autowired
     private JudgeService judgeService;
 
+    @GetMapping("/dummy")
+    public String dummy(){
+        return "carlos test";
+    }
     @PostMapping("/submit")
-
     public SubmissionResponse submitProblem(@RequestBody Submission submission){
         SubmissionResponse response = new SubmissionResponse();
         try {
