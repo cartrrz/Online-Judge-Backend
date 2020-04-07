@@ -16,8 +16,13 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.attribute.PosixFilePermission;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 @Service
 public class JudgeServiceImpl implements JudgeService {
@@ -107,11 +112,32 @@ public class JudgeServiceImpl implements JudgeService {
             if ( !workFile.exists() && !workFile.mkdirs() ) {
                 throw new Exception("Unable to create a directory: " + baseDirectory);
             }
+            setWorkDirectoryPermission(workFile);
+
             //TODO: change class name in code for java
             createCode(submission.getCode(), submission.getProblemName(),language, baseDirectory);
             createInputAndOutput(submission.getInput(), submission.getStandOutput(), baseDirectory);
         }catch (Exception e){
 
+        }
+    }
+
+    private void setWorkDirectoryPermission(File workDirectory) throws IOException {
+        if ( !System.getProperty("os.name").contains("Windows") ) {
+            Set<PosixFilePermission> permissions = new HashSet<>();
+
+            permissions.add(PosixFilePermission.OWNER_READ);
+            permissions.add(PosixFilePermission.OWNER_WRITE);
+            permissions.add(PosixFilePermission.OWNER_EXECUTE);
+
+            permissions.add(PosixFilePermission.GROUP_READ);
+            permissions.add(PosixFilePermission.GROUP_WRITE);
+            permissions.add(PosixFilePermission.GROUP_EXECUTE);
+
+            permissions.add(PosixFilePermission.OTHERS_READ);
+            permissions.add(PosixFilePermission.OTHERS_WRITE);
+            permissions.add(PosixFilePermission.OTHERS_EXECUTE);
+            Files.setPosixFilePermissions(workDirectory.toPath(), permissions);
         }
     }
 
