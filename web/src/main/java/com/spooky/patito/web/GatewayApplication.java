@@ -7,7 +7,8 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 @SpringBootApplication(
         scanBasePackages = {
                 "com.spooky.patito.core",
-                "com.spooky.patito.model"})
+                "com.spooky.patito.model",
+                "com.spooky.patito.web"})
 
 public class GatewayApplication extends SpringBootServletInitializer {
     public static void main(String[] args) {
