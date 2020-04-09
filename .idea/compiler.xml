@@ -6,22 +6,28 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="gateway" />
+        <module name="judge-core" />
+        <module name="model" />
+        <module name="web" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="core" target="1.8" />
       <module name="demo" target="1.8" />
-      <module name="gateway" target="1.8" />
+      <module name="judge-core" target="1.8" />
+      <module name="model" target="1.8" />
       <module name="onlinejudge" target="1.8" />
+      <module name="web" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="core" options="-parameters" />
       <module name="demo" options="-parameters" />
-      <module name="gateway" options="-parameters" />
+      <module name="judge-core" options="-parameters" />
+      <module name="model" options="-parameters" />
       <module name="onlinejudge" options="-parameters" />
+      <module name="web" options="-parameters" />
     </option>
   </component>
 </project>
