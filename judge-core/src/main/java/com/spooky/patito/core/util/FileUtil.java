@@ -12,7 +12,7 @@ import java.io.FileOutputStream;
 public class FileUtil {
 
     public String getContentFile(String filePath){
-        String content = "";
+        String content = null;
         FileInputStream inputStream = null;
         try {
             inputStream = new FileInputStream(filePath);

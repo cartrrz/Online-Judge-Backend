@@ -1,0 +1,8 @@
+/Users/cartrrz/OnlineJudge/Online-Judge-Backend/model/src/main/java/com/spooky/patito/model/transfer/JudgeDTO.java
+/Users/cartrrz/OnlineJudge/Online-Judge-Backend/model/src/main/java/com/spooky/patito/model/sql/TestCase.java
+/Users/cartrrz/OnlineJudge/Online-Judge-Backend/model/src/main/java/com/spooky/patito/repository/TestCaseRepository.java
+/Users/cartrrz/OnlineJudge/Online-Judge-Backend/model/src/main/java/com/spooky/patito/model/Submission.java
+/Users/cartrrz/OnlineJudge/Online-Judge-Backend/model/src/main/java/com/spooky/patito/model/LanguageEnum.java
+/Users/cartrrz/OnlineJudge/Online-Judge-Backend/model/src/main/java/com/spooky/patito/model/transfer/SubmissionResponse.java
+/Users/cartrrz/OnlineJudge/Online-Judge-Backend/model/src/main/java/com/spooky/patito/model/transfer/TestCaseDTO.java
+/Users/cartrrz/OnlineJudge/Online-Judge-Backend/model/src/main/java/com/spooky/patito/model/transfer/CompileDTO.java

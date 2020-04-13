@@ -1,31 +1,15 @@
 package com.spooky.patito.model.transfer;
 
+
+import lombok.Data;
+import lombok.ToString;
+
+@Data
+@ToString
 public class JudgeDTO {
     private String runresult;
     private int usedTime;
     private  int usedMemory;
+    private Long extId;
 
-    public String getRunresult() {
-        return runresult;
-    }
-
-    public void setRunresult(String runresult) {
-        this.runresult = runresult;
-    }
-
-    public int getUsedTime() {
-        return usedTime;
-    }
-
-    public void setUsedTime(int usedTime) {
-        this.usedTime = usedTime;
-    }
-
-    public int getUsedMemory() {
-        return usedMemory;
-    }
-
-    public void setUsedMemory(int usedMemory) {
-        this.usedMemory = usedMemory;
-    }
 }

@@ -1,0 +1,5 @@
+com/spooky/patito/web/service/impl/TestCaseServiceImpl.class
+com/spooky/patito/web/controller/TestCaseController.class
+com/spooky/patito/web/service/TestCaseService.class
+com/spooky/patito/web/GatewayApplication.class
+com/spooky/patito/web/controller/JudgeController.class

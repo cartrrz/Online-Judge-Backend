@@ -22,8 +22,8 @@ public class CompileServiceImpl implements CompileService {
 
     @Override
     public CompileDTO getCompileResult(Submission submission, String workDirectory, String compilePattern){
-        String commandLine = getCompileCommandLine(submission.getProblemName(), workDirectory, compilePattern);
-        String compileLogPath = String.format("%s/%s-compile.log",workDirectory, submission.getProblemName());
+        String commandLine = getCompileCommandLine(submission.getProblemId().toString(), workDirectory, compilePattern);
+        String compileLogPath = String.format("%s/%s-compile.log",workDirectory, submission.getProblemId().toString());
 
         int timeLimit = 5000;
         int memoryLimit = 0;

@@ -1,0 +1,8 @@
+com/spooky/patito/repository/TestCaseRepository.class
+com/spooky/patito/model/LanguageEnum.class
+com/spooky/patito/model/transfer/TestCaseDTO.class
+com/spooky/patito/model/transfer/JudgeDTO.class
+com/spooky/patito/model/transfer/SubmissionResponse.class
+com/spooky/patito/model/transfer/CompileDTO.class
+com/spooky/patito/model/sql/TestCase.class
+com/spooky/patito/model/Submission.class

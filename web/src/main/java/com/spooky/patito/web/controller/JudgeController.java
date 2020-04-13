@@ -19,7 +19,7 @@ public class JudgeController {
 
     @GetMapping("/dummy")
     public String dummy(){
-        return "carlos test";
+        return "dummy test";
     }
 
     @PostMapping("/submit")

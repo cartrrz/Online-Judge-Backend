@@ -1,5 +1,6 @@
 package com.spooky.patito.core.service.impl;
 
+import com.spooky.patito.model.sql.TestCase;
 import com.spooky.patito.model.transfer.CompileDTO;
 import com.spooky.patito.model.transfer.JudgeDTO;
 import com.spooky.patito.core.service.CompileService;
@@ -9,6 +10,8 @@ import com.spooky.patito.model.Submission;
 import com.spooky.patito.core.service.RunnerService;
 import com.spooky.patito.core.util.CompareUtil;
 import com.spooky.patito.core.util.FileUtil;
+import com.spooky.patito.repository.TestCaseRepository;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -17,10 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.attribute.PosixFilePermission;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class JudgeServiceImpl implements JudgeService {
@@ -40,6 +40,9 @@ public class JudgeServiceImpl implements JudgeService {
     @Autowired
     private CompareUtil compareUtil;
 
+    @Autowired
+    private TestCaseRepository testCaseRepository;
+
     @Override
     public Map<String, Object> processSubmission(Submission submission){
         synchronized (this){
@@ -51,56 +54,68 @@ public class JudgeServiceImpl implements JudgeService {
             }
             Map<String, Object> response = new HashMap<>();
             //TODO: split baseDirectory by diferent sumission with submission id
-            String baseDirectory = String.format("%s/judge", judgeWorkDirectory);
+            String baseDirectory = String.format("%s/judge/%s", judgeWorkDirectory, submission.getProblemId());
             //preProcess
             preprocess(submission, baseDirectory, language);
             //Compile
             CompileDTO compileDTO = compileService.getCompileResult(submission, baseDirectory, language.getCompilePatternValue());
             response.put("Compiler",compileDTO);
             //run
-            JudgeDTO judgeDTO = new JudgeDTO();
+            List<JudgeDTO> judgeDTOList = new ArrayList<>();
             if(compileDTO!= null){
                 if(compileDTO.isSuccess()){
-                    judgeDTO = getjudgeresult(submission, language.getRunPatternValue(), baseDirectory);
-                    if(compareOutput(getStdOutputFilePath(baseDirectory),getOutputFilePath(baseDirectory))){
-                        judgeDTO.setRunresult("AC");
-                    }
-                }else{
-                    judgeDTO.setRunresult("CE");
+                    judgeDTOList = getjudgeresult(submission, language.getRunPatternValue(), baseDirectory);
                 }
             }
-            response.put("RunResponse", judgeDTO);
+            cleanUp(baseDirectory);
+            response.put("RunResponse", judgeDTOList);
             return response;
         }
     }
 
-    public JudgeDTO getjudgeresult(Submission submission, String runPattern, String baseDirectory){
-        JudgeDTO judgeDTO = new JudgeDTO();
+    public List<JudgeDTO> getjudgeresult(Submission submission, String runPattern, String baseDirectory){
+        List<JudgeDTO> judgeDTOList = new ArrayList<>();
         try {
-            String inputFilePath=getInputFilePath(baseDirectory);
-            String outputFilePath=getOutputFilePath(baseDirectory);
-            String runCommand = getRunCommandLine(submission.getProblemName(), baseDirectory, runPattern);
-            Map<String, Object> runResult = runnerService.runProgram(
-                    runCommand,
-                    inputFilePath,
-                    outputFilePath,
-                    submission.getTimeLimit(),
-                    submission.getMemoryLimit());
-            int exitCode= (Integer)runResult.get("exitCode");
-            int usedTime = (Integer) runResult.get("usedTime");
-            int usedMemory = (Integer) runResult.get("usedMemory");
-            judgeDTO.setRunresult(getRunResult(
-                    exitCode,
-                    submission.getTimeLimit(),
-                    usedTime,
-                    submission.getMemoryLimit(),
-                    usedMemory));
-            judgeDTO.setUsedMemory(usedMemory);
-            judgeDTO.setUsedTime(usedTime);
+            List<TestCase> testCases = testCaseRepository.findByProblemId(submission.getProblemId());
+            for(TestCase testCase : testCases){
+                JudgeDTO judgeDTO = new JudgeDTO();
+                try{
+                    String inputPath = testCase.getInputPath();
+                    String outputPath = testCase.getOutputPath();
+                    String outputSourcePath = getOutputSourcePath(baseDirectory,testCase.getExtId().toString());
+                    String runCommand = getRunCommandLine(submission.getProblemId().toString(), baseDirectory, runPattern);
+                    Map<String, Object>runResult = runnerService.runProgram(
+                            runCommand,
+                            inputPath,
+                            outputSourcePath,
+                            submission.getTimeLimit(),
+                            submission.getMemoryLimit());
+                    int exitCode= (Integer)runResult.get("exitCode");
+                    int usedTime = (Integer) runResult.get("usedTime");
+                    int usedMemory = (Integer) runResult.get("usedMemory");
+                    String result = getRunResult(
+                            exitCode,
+                            submission.getTimeLimit(),
+                            usedTime,
+                            submission.getMemoryLimit(),
+                            usedMemory);
+                    if(compareOutput(outputPath,outputSourcePath)){
+                        result = "AC";
+                    }
+                    judgeDTO.setRunresult(result);
+                    judgeDTO.setUsedMemory(usedMemory);
+                    judgeDTO.setUsedTime(usedTime);
+                    judgeDTO.setExtId(testCase.getExtId());
+                }catch (Exception e){
+                    judgeDTO.setExtId(testCase.getExtId());
+                }
+                judgeDTOList.add(judgeDTO);
+            }
+
         }catch (Exception e){
 
         }
-        return judgeDTO;
+        return judgeDTOList;
     }
 
     private void preprocess(Submission submission, String baseDirectory, LanguageEnum language){
@@ -112,9 +127,8 @@ public class JudgeServiceImpl implements JudgeService {
             }
             setWorkDirectoryPermission(workFile);
 
-            //TODO: change class name in code for java
-            createCode(submission.getCode(), submission.getProblemName(),language, baseDirectory);
-            createInputAndOutput(submission.getInput(), submission.getStandOutput(), baseDirectory);
+            //TODO: change class name in source for java
+            createCode(submission.getSource(), submission.getProblemId(),language, baseDirectory);
         }catch (Exception e){
 
         }
@@ -139,41 +153,17 @@ public class JudgeServiceImpl implements JudgeService {
         }
     }
 
-    private boolean createCode(String code, String problemName, LanguageEnum language, String workDirectory){
+    private boolean createCode(String code, Long problemId, LanguageEnum language, String workDirectory){
 
         //TODO: I don't know what is a good name maybe a random name generated
-        String codeFilePath = String.format("%s/%s.%s",workDirectory, problemName, language.getExtension());
+        String codeFilePath = String.format("%s/%s.%s",workDirectory, problemId, language.getExtension());
         return fileUtil.createFileWithContent(codeFilePath, code);
     }
 
-    private boolean createInputAndOutput(String input, String output, String workDirectory){
+    private String getOutputSourcePath(String workDirectory, String tesCaseId){
 
-            boolean iscreated = true;
-
-            // Stand Input File
-            String filePathInput = getInputFilePath(workDirectory);
-            iscreated = iscreated & fileUtil.createFileWithContent(filePathInput, input);
-
-            // Stand Output File
-            String filePathOutput = getStdOutputFilePath(workDirectory);
-            iscreated = iscreated & fileUtil.createFileWithContent(filePathOutput, output);
-
-            return iscreated;
-    }
-    private String getInputFilePath(String workDirectory){
-
-        String filePathInput = String.format("%s/input.txt", workDirectory);
-        return filePathInput;
-    }
-    private String getOutputFilePath(String workDirectory){
-
-        String filePathOutput = String.format("%s/output.txt", workDirectory);
+        String filePathOutput = String.format("%s/output-%s.txt", workDirectory, tesCaseId);
         return filePathOutput;
-    }
-
-    private String getStdOutputFilePath(String workDirectory){
-        String filePathstdOutput = String.format("%s/stdoutput.txt", workDirectory);
-        return filePathstdOutput;
     }
 
     private String getRunCommandLine(String name, String workDirectory, String runPattern) {
@@ -206,4 +196,14 @@ public class JudgeServiceImpl implements JudgeService {
         return false;
     }
 
+    private void cleanUp(String directory){
+        File baseDirFile = new File(directory);
+        if ( baseDirFile.exists() ) {
+            try {
+                FileUtils.deleteDirectory(baseDirFile);
+            } catch (IOException ex) {
+                //logger
+            }
+        }
+    }
 }
