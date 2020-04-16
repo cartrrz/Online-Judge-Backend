@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="maven-antrun-" default="Compile JNI C Library"  >
+<target name="Compile JNI C Library" description="Generate headers and compile the native code">
+  <echo>Generating dynamic-link library</echo>
+  <exec executable="make"></exec>
+</target>
+</project>

@@ -1,0 +1,9 @@
+com/spooky/patito/core/service/impl/RunnerServiceImpl.class
+com/spooky/patito/core/util/CompareUtil.class
+com/spooky/patito/core/util/FileUtil.class
+com/spooky/patito/core/service/impl/JudgeServiceImpl.class
+com/spooky/patito/core/service/JudgeService.class
+com/spooky/patito/core/service/impl/CompileServiceImpl.class
+com/spooky/patito/core/util/NativeLibraryUtil.class
+com/spooky/patito/core/service/RunnerService.class
+com/spooky/patito/core/service/CompileService.class

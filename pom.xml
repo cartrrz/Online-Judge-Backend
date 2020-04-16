@@ -3,7 +3,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <modules>
-        <module>gateway</module>
+        <module>web</module>
+        <module>model</module>
+        <module>judge-core</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -11,15 +13,16 @@
         <version>2.2.6.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.spoky.patito</groupId>
+    <groupId>com.spooky.patito</groupId>
     <artifactId>onlinejudge</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>${revision}</version>
     <name>onlinejudge</name>
     <description>first version of online judge backend</description>
     <packaging>pom</packaging>
 
     <properties>
         <java.version>1.8</java.version>
+        <revision>0.0.1-SNAPSHOT</revision>
     </properties>
 
     <dependencies>
@@ -32,12 +35,16 @@
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
 
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <scope>runtime</scope>
             <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.10</version>
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>
@@ -65,12 +72,13 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <!-- File I/O -->
+
         <dependency>
-            <groupId>org.apache.directory.studio</groupId>
-            <artifactId>org.apache.commons.io</artifactId>
-            <version>2.4</version>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.9.8</version>
         </dependency>
+
 
     </dependencies>
 
