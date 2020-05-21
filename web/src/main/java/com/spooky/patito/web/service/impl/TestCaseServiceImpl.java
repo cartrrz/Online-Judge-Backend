@@ -105,15 +105,45 @@ public class TestCaseServiceImpl implements TestCaseService {
     }
 
     @Override
-    public List<TestCase> getByProblemId(Long problemId){
-        List<TestCase> list = new ArrayList<>();
+    public List<TestCaseDTO> getByProblemId(Long problemId){
+        List<TestCaseDTO> list = new ArrayList<>();
         try{
-            list = testCaseRepository.findByProblemId(problemId);
+            List<TestCase> testCases = testCaseRepository.findByProblemId(problemId);
+            for(TestCase testCase : testCases){
+                TestCaseDTO dto = new TestCaseDTO();
+                dto.setExtId(testCase.getExtId());
+                dto.setProblemId(testCase.getProblemId());
+                list.add(dto);
+            }
         }catch (Exception e){
             //logger
         }
         return list;
     }
 
+    @Override
+    public TestCaseDTO getByExtId(Long extId){
+        TestCaseDTO dto = new TestCaseDTO();
+        try{
+            TestCase testCase = testCaseRepository.findByExtId(extId);
+            dto.setExtId(testCase.getExtId());
+            dto.setProblemId(testCase.getProblemId());
+            dto.setInput(fileUtil.getContentFile(testCase.getInputPath()));
+            dto.setOutput(fileUtil.getContentFile(testCase.getOutputPath()));
+        }catch(Exception e){
+            //logger
+        }
+        return dto;
+    }
+
+    @Override
+    public boolean archive(Long extId){
+        TestCase testCase = testCaseRepository.findByExtId(extId);
+        if(testCase != null){
+            testCaseRepository.delete(testCase);
+            return true;
+        }
+        return false;
+    }
 
 }

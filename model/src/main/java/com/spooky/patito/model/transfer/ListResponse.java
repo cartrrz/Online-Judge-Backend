@@ -2,18 +2,13 @@ package com.spooky.patito.model.transfer;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
-import lombok.ToString;
+
+import java.util.List;
 
 @Data
-@ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class TestCaseDTO {
+public class ListResponse<T> extends BaseResponse{
+    List<T> response;
 
-    private Long problemId;
-
-    private String input;
-
-    private String output;
-
-    private Long extId;
+    int total;
 }

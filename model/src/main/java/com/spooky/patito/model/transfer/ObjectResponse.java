@@ -5,12 +5,6 @@ import lombok.Data;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class BaseResponse {
-
-    boolean success = true;
-
-    String message;
-
-    boolean newTestCase;
-
+public class ObjectResponse<T> extends BaseResponse{
+    T response;
 }

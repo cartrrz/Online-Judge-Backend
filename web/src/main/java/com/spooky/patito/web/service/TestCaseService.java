@@ -11,5 +11,9 @@ public interface TestCaseService {
 
     boolean update(TestCaseDTO testCaseDTO);
 
-    List<TestCase> getByProblemId(Long problemId);
+    List<TestCaseDTO> getByProblemId(Long problemId);
+
+    TestCaseDTO getByExtId(Long extId);
+
+    boolean archive(Long extId);
 }
