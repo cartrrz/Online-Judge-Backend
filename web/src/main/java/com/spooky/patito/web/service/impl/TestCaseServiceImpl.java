@@ -7,6 +7,7 @@ import com.spooky.patito.repository.TestCaseRepository;
 import com.spooky.patito.web.service.TestCaseService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.ServletContext;
@@ -21,15 +22,15 @@ public class TestCaseServiceImpl implements TestCaseService {
     private TestCaseRepository testCaseRepository;
 
     @Autowired
-    private ServletContext context;
-
-    @Autowired
     private FileUtil fileUtil;
+
+    @Value("${local.store}")
+    private String storePath;
 
     @Override
     public boolean create(TestCaseDTO testCaseDTO){
 
-        String absolutePath = context.getRealPath("resources/testcase");
+        String absolutePath = storePath;
         String inputPath = "";
         String outputPath = "";
         //input
