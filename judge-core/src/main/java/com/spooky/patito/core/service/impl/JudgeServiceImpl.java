@@ -82,7 +82,7 @@ public class JudgeServiceImpl implements JudgeService {
                 try{
                     String inputPath = testCase.getInputPath();
                     String outputPath = testCase.getOutputPath();
-                    String outputSourcePath = getOutputSourcePath(baseDirectory,testCase.getExtId().toString());
+                    String outputSourcePath = getOutputSourcePath(baseDirectory,testCase.getExtId());
                     String runCommand = getRunCommandLine(submission.getProblemId().toString(), baseDirectory, runPattern);
                     Map<String, Object>runResult = runnerService.runProgram(
                             runCommand,

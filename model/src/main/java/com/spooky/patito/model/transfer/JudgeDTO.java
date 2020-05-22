@@ -10,6 +10,6 @@ public class JudgeDTO {
     private String runresult;
     private int usedTime;
     private  int usedMemory;
-    private Long extId;
+    private String extId;
 
 }

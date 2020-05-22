@@ -63,7 +63,7 @@ public class TestCaseController {
 
     @PostMapping("/archive/{extId}")
     @ResponseBody
-    public BaseResponse archive(@PathVariable("extId") Long extId){
+    public BaseResponse archive(@PathVariable("extId") String extId){
         BaseResponse response = new BaseResponse();
         try {
             response.setSuccess(testCaseService.archive(extId));
@@ -79,12 +79,12 @@ public class TestCaseController {
     public BaseResponse archiveProblem(@PathVariable("problemId") Long problemId){
         BaseResponse response = new BaseResponse();
         try{
-            List<Long> extIds = testCaseRepository.findByProblemId(problemId)
+            List<String> extIds = testCaseRepository.findByProblemId(problemId)
                     .stream()
                     .map(TestCase::getExtId)
                     .collect(Collectors.toList());
             List<BaseResponse> list = new ArrayList<>();
-            for(Long extId : extIds){
+            for(String extId : extIds){
                 if(!testCaseService.archive(extId)){
                     response.setSuccess(false);
                     response.setMessage("Unable to archive testCase extId : "+ extId);
@@ -117,7 +117,7 @@ public class TestCaseController {
 
     @GetMapping("{extId}")
     @ResponseBody
-    public ObjectResponse<TestCaseDTO> testCaseByExtId(@PathVariable("extId") Long extId){
+    public ObjectResponse<TestCaseDTO> testCaseByExtId(@PathVariable("extId") String extId){
         ObjectResponse<TestCaseDTO> response = new ObjectResponse<>();
         try{
             TestCaseDTO dto = testCaseService.getByExtId(extId);

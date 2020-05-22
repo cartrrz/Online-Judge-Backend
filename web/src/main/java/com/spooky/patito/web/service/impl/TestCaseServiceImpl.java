@@ -122,7 +122,7 @@ public class TestCaseServiceImpl implements TestCaseService {
     }
 
     @Override
-    public TestCaseDTO getByExtId(Long extId){
+    public TestCaseDTO getByExtId(String extId){
         TestCaseDTO dto = new TestCaseDTO();
         try{
             TestCase testCase = testCaseRepository.findByExtId(extId);
@@ -137,7 +137,7 @@ public class TestCaseServiceImpl implements TestCaseService {
     }
 
     @Override
-    public boolean archive(Long extId){
+    public boolean archive(String extId){
         TestCase testCase = testCaseRepository.findByExtId(extId);
         if(testCase != null){
             testCaseRepository.delete(testCase);

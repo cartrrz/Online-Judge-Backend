@@ -22,7 +22,7 @@ public class TestCase {
     String outputPath;
 
     @Column(name = "ext_id")
-    Long extId;
+    String extId;
 
     @Column(name = "problem_id")
     Long problemId;

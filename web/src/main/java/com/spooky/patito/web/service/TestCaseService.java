@@ -13,7 +13,7 @@ public interface TestCaseService {
 
     List<TestCaseDTO> getByProblemId(Long problemId);
 
-    TestCaseDTO getByExtId(Long extId);
+    TestCaseDTO getByExtId(String extId);
 
-    boolean archive(Long extId);
+    boolean archive(String extId);
 }

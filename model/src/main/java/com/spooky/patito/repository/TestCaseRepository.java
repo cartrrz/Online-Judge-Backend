@@ -11,5 +11,5 @@ public interface TestCaseRepository extends JpaRepository<TestCase, Long> {
 
     List<TestCase> findByProblemId(Long problemId);
 
-    TestCase findByExtId(Long extId);
+    TestCase findByExtId(String extId);
 }

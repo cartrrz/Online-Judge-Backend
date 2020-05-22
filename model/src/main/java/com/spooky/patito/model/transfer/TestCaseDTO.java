@@ -15,5 +15,5 @@ public class TestCaseDTO {
 
     private String output;
 
-    private Long extId;
+    private String extId;
 }
